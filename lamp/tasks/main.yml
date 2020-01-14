@@ -1,0 +1,30 @@
+---
+# tasks file for lamp
+  - name: update & install apache2
+    package:
+      name: apache2
+      update_cache: yes
+      state: present
+    when: ansible_os_family == "Debian"
+    notify:
+      - restart apache2
+  - name: Install httpd
+    package:
+      name: httpd
+      state: present
+    when: ansible_os_family == "RedHat" 
+    notify:
+      - restart httpd
+  - name: Install PHP Modules
+    package:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ php_modules }}"
+    
+  - name: File transfer
+    template:
+      src: info.php.j2
+      dest: /var/www/html/info.php 
+    notify:
+      - restart httpd
+      - restart apache2   

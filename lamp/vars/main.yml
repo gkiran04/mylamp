@@ -1,0 +1,5 @@
+---
+# vars file for lamp
+  php_modules:
+    - php
+    
